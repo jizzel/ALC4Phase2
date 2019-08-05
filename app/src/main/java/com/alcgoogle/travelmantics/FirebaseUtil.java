@@ -1,6 +1,7 @@
 package com.alcgoogle.travelmantics;
 
 import android.app.Activity;
+import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,7 +16,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +33,8 @@ public class FirebaseUtil {
     public static ArrayList<TravelDeal> mDeals;
     public static FirebaseAuth mFirebaseAuth;
     public static FirebaseAuth.AuthStateListener mAuthStateListener;
+    public static FirebaseStorage mFirebaseStorage;
+    public static StorageReference mStorageRef;
     private static ListActivity caller;
     public static boolean isAdmin;
 
@@ -52,6 +58,7 @@ public class FirebaseUtil {
                     Toast.makeText(callerActivity.getBaseContext(), "Welcome back!", Toast.LENGTH_SHORT).show();
                 }
             };
+            connectStorage();
         }
         mDeals = new ArrayList<>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(rf);
@@ -109,5 +116,10 @@ public class FirebaseUtil {
 
     public static void detachListener(){
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    public static void connectStorage(){
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mStorageRef = mFirebaseStorage.getReference().child("deals_pictures");
     }
 }
